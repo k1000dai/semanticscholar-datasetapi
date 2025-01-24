@@ -35,6 +35,18 @@ def demonstrate_dataset_info(client: SemanticScholarDataset) -> None:
     for release in releases:
         logger.info(f"- {release}")
 
+def demonstrate_download_latest_release(client: SemanticScholarDataset) -> None:
+    """Demonstrate downloading the latest release of a dataset."""
+    try:
+        # Example: Download the latest release of the papers dataset
+        dataset_name = "papers"
+        logger.info(f"\nDownloading latest release of {dataset_name}...")
+        client.download_latest_release(datasetname=dataset_name, save_dir="dataset")
+    except ValueError as e:
+        logger.error(f"Error in downloading latest release: {str(e)}")
+    except Exception as e:
+        logger.error(f"Unexpected error in downloading latest release: {str(e)}")
+        
 def demonstrate_diff_operations(client: SemanticScholarDataset) -> None:
     """Demonstrate diff operations between releases."""
     try:
@@ -42,20 +54,14 @@ def demonstrate_diff_operations(client: SemanticScholarDataset) -> None:
         dataset_name = "papers"
         start_release = "2024-12-31"
         logger.info(f"\nGetting diffs for {dataset_name} from {start_release} to latest...")
-        
-        diff_urls = client.get_download_urls_from_diffs(
-            start_release_id=start_release,
-            end_release_id="latest",
-            datasetname=dataset_name
-        )
-        logger.info(f"Found diff information: {diff_urls}")
 
         # Download the diffs
         logger.info("\nDownloading diffs...")
         client.download_diffs(
             start_release_id=start_release,
             end_release_id="latest",
-            datasetname=dataset_name
+            datasetname=dataset_name,
+            save_dir="diffs"
         )
     except ValueError as e:
         logger.error(f"Error in diff operations: {str(e)}")
@@ -71,6 +77,7 @@ def main() -> None:
 
         # Demonstrate different API capabilities
         demonstrate_dataset_info(client)
+        demonstrate_download_latest_release(client)
         demonstrate_diff_operations(client)
 
     except Exception as e:
