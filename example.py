@@ -41,7 +41,7 @@ def demonstrate_download_latest_release(client: SemanticScholarDataset) -> None:
         # Example: Download the latest release of the papers dataset
         dataset_name = "papers"
         logger.info(f"\nDownloading latest release of {dataset_name}...")
-        client.download_latest_release(datasetname=dataset_name, save_dir="dataset")
+        client.download_latest_release(datasetname=dataset_name, save_dir="dataset",range=range(10, 11))
     except ValueError as e:
         logger.error(f"Error in downloading latest release: {str(e)}")
     except Exception as e:

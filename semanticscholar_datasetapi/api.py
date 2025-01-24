@@ -147,9 +147,19 @@ class SemanticScholarDataset:
         return response
 
     def download_latest_release(
-        self, datasetname: Optional[str] = None, save_dir=None
+        self,
+        datasetname: Optional[str] = None,
+        save_dir=None,
+        range: Optional[range] = None,
     ) -> None:
-        """Download the latest release of a dataset."""
+        """
+        Download the latest release of a dataset.
+        
+        Args:
+            datasetname (str): The name of the dataset to download.
+            save_dir (str): The directory to save the downloaded files.
+            range (range): A range of indices to download from the list of files.
+        """
         self.__validate_dataset(datasetname)
         response = self.get_download_urls_from_release(datasetname)
         download_urls = response.get("files", [])
@@ -163,16 +173,33 @@ class SemanticScholarDataset:
         if save_dir:
             self.__set_save_path(save_dir)
 
+        if range == None:
+            range = range(0, len(download_urls))
+
         for i, url in enumerate(download_urls):
+            if i not in range:
+                continue
             save_name = os.path.join(self.SAVE_DIR, f"{datasetname}_latest_{i}.json.gz")
             self.__download_file(url, save_name)
 
         logger.info("Download complete.")
 
     def download_past_release(
-        self, release_id: str, datasetname: Optional[str] = None, save_dir=None
+        self,
+        release_id: str,
+        datasetname: Optional[str] = None,
+        save_dir=None,
+        range: Optional[range] = None,
     ) -> None:
-        """Download a past release of a dataset."""
+        """
+        Download a past release of a dataset.
+        
+        Args:
+            release_id (str): The release ID to download.
+            datasetname (str): The name of the dataset to download.
+            save_dir (str): The directory to save the downloaded files.
+            range (range): A range of indices to download from the list of files.
+        """
         self.__validate_dataset(datasetname)
 
         if release_id == "latest":
@@ -198,8 +225,15 @@ class SemanticScholarDataset:
         if save_dir:
             self.__set_save_path(save_dir)
 
+        if range == None:
+            range = range(0, len(download_urls))
+
         for i, url in enumerate(download_urls):
-            save_name = os.path.join(self.SAVE_DIR, f"{datasetname}_{release_id}_{i}.json.gz")
+            if i not in range:
+                continue
+            save_name = os.path.join(
+                self.SAVE_DIR, f"{datasetname}_{release_id}_{i}.json.gz"
+            )
             self.__download_file(url, save_name)
 
     def download_diffs(
@@ -209,7 +243,15 @@ class SemanticScholarDataset:
         datasetname: Optional[str] = None,
         save_dir=None,
     ) -> None:
-        """Download diffs between two releases of a dataset."""
+        """
+        Download diffs between two releases of a dataset.
+        
+        Args:
+            start_release_id (str): The starting release ID.
+            end_release_id (str): The ending release ID.
+            datasetname (str): The name of the dataset to download.
+            save_dir (str): The directory to save the downloaded files.
+        """
         self.__validate_dataset(datasetname)
 
         response = self.get_download_urls_from_diffs(
