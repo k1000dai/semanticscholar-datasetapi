@@ -98,7 +98,7 @@ Download the latest release of a specific dataset.
 
 - `datasetname`: Name of the dataset to download
 - `save_dir`: Directory to save downloaded files (defaults to current directory)
-- `range`: Optional range of indices to download from the list of files
+- `download_range`: Optional range of indices to download from the list of files
 
 #### `download_past_release(release_id: str, datasetname: Optional[str] = None, save_dir: Optional[str] = None, range: Optional[range] = None) -> None`
 Download a specific past release of a dataset.
@@ -106,7 +106,7 @@ Download a specific past release of a dataset.
 - `release_id`: ID of the release to download
 - `datasetname`: Name of the dataset to download
 - `save_dir`: Directory to save downloaded files (defaults to current directory)
-- `range`: Optional range of indices to download from the list of files
+- `download_range`: Optional range of indices to download from the list of files
 
 #### `download_diffs(start_release_id: str, end_release_id: str, datasetname: Optional[str] = None, save_dir: Optional[str] = None) -> None`
 Download the differences between two releases of a dataset.

@@ -150,7 +150,7 @@ class SemanticScholarDataset:
         self,
         datasetname: Optional[str] = None,
         save_dir=None,
-        range: Optional[range] = None,
+        download_range: Optional[range] = None,
     ) -> None:
         """
         Download the latest release of a dataset.
@@ -158,7 +158,7 @@ class SemanticScholarDataset:
         Args:
             datasetname (str): The name of the dataset to download.
             save_dir (str): The directory to save the downloaded files.
-            range (range): A range of indices to download from the list of files.
+            download_range (range): A range of indices to download from the list of files.
         """
         self.__validate_dataset(datasetname)
         response = self.get_download_urls_from_release(datasetname)
@@ -173,11 +173,11 @@ class SemanticScholarDataset:
         if save_dir:
             self.__set_save_path(save_dir)
 
-        if range == None:
-            range = range(0, len(download_urls))
+        if download_range == None:
+            download_range = range(0, len(download_urls))
 
         for i, url in enumerate(download_urls):
-            if i not in range:
+            if i not in download_range:
                 continue
             save_name = os.path.join(self.SAVE_DIR, f"{datasetname}_latest_{i}.json.gz")
             self.__download_file(url, save_name)
@@ -189,7 +189,7 @@ class SemanticScholarDataset:
         release_id: str,
         datasetname: Optional[str] = None,
         save_dir=None,
-        range: Optional[range] = None,
+        download_range: Optional[range] = None,
     ) -> None:
         """
         Download a past release of a dataset.
@@ -198,7 +198,7 @@ class SemanticScholarDataset:
             release_id (str): The release ID to download.
             datasetname (str): The name of the dataset to download.
             save_dir (str): The directory to save the downloaded files.
-            range (range): A range of indices to download from the list of files.
+            download_range (range): A range of indices to download from the list of files.
         """
         self.__validate_dataset(datasetname)
 
@@ -225,11 +225,11 @@ class SemanticScholarDataset:
         if save_dir:
             self.__set_save_path(save_dir)
 
-        if range == None:
-            range = range(0, len(download_urls))
+        if download_range == None:
+            download_range = range(0, len(download_urls))
 
         for i, url in enumerate(download_urls):
-            if i not in range:
+            if i not in download_range:
                 continue
             save_name = os.path.join(
                 self.SAVE_DIR, f"{datasetname}_{release_id}_{i}.json.gz"
